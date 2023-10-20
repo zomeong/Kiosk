@@ -14,8 +14,9 @@ public class Products extends Menu {
         super(name, script);
         this.price = price;
 
+        // options를 Object 타입 가변 인자로 받아서 각각 String과 Integer로 형변환 후 map에 저장
         this.options =  new LinkedHashMap<>();
-        for(int i = 0; i < options.length; i+=2) {
+        for(int i = 0; i < options.length; i += 2) {
             String key = (String) options[i];
             Integer value = (Integer) options[i + 1];
             this.options.put(key, value);

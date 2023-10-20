@@ -26,9 +26,7 @@ public class Order {
         else {
             // 장바구니 내역 출력
             for (Products p : orderList)
-                System.out.println(p.getName() + " | \u20A9 " + p.getPrice() + " | " + p.getCount() + "개 | " + p.getScript());
-
- //           System.out.println("\n옵션 추가 금액 : \u20A9 " + optionPrice);
+                System.out.println(p.getName() + " | \u20A9 " + p.getPrice() + " | " + p.getCount() + "개");
 
             System.out.println("\n[ Total ]");
             System.out.println("\u20A9 " + totalPrice);
@@ -55,7 +53,7 @@ public class Order {
                 else Main.totalProducts.put(p.getName(), p);                // 존재하지 않으면 put
             }
 
-            clearOrder();                           // 장바구니 초기화
+            clearOrder();    // 장바구니 초기화
 
             System.out.println("\n---------------------------------------------------------------------------\n");
             System.out.println("주문이 완료되었습니다!\n");
@@ -83,45 +81,11 @@ public class Order {
 
     public void addList(Products p){
         // displayMenu()에서 전달받은 상품 객체 장바구니에 추가
-        String name = p.getName();
-        int price = p.getPrice();
-
         System.out.println("\n---------------------------------------------------------------------------\n");
         System.out.println(p.getName() + " | \u20A9 " + p.getPrice() + " | " + p.getScript());
 
-        if(p.options != null){                  // 옵션이 존재할 경우
-            System.out.println("\n위 메뉴의 어떤 옵션으로 추가하시겠습니까?");
-
-            int i = 1;
-            for(String key : p.options.keySet())    // 옵션 출력
-                System.out.println(i++ + ". " + key + " (+ \u20A9 " + p.options.get(key) + ")");
-
-            System.out.print("\n옵션 선택 : ");
-            int op_select = sc.nextInt();
-            System.out.println("\n---------------------------------------------------------------------------\n");
-
-            int j = 1;
-            for(String key : p.options.keySet()){
-                if(op_select == j++){                               // map에서 op_select번째 값 탐색
-                    name += "(" + key + ")";           // name을 상품 이름+(옵션 이름)으로 저장
-                    price += p.options.get(key);         // 현재 상품 값인 price에 옵션 값을 더해 저장
-                    String script = p.getScript();
-
-  //                  optionPrice += p.options.get(key);              // 전체 옵션 추가금 업데이트
-
-                    // 주문 목록에 존재하면 해당 객체 반환, 존재하지 않으면 생성
-                    p = null;
-                    for (Products find_p : orderList) {
-                        if (find_p.getName().equals(name)) {
-                            p = find_p;
-                            break;
-                        }
-                    }
-                    if(p == null) p = new Products(name, script, price);
-                    break;
-                }
-            }
-            System.out.println(p.getName() + " | \u20A9 " + p.getPrice() + " | " + p.getScript());
+        if(p.options != null) {
+            p = selectOption(p);        // 옵션이 존재할 경우 상품 객체(p) 변경
         }
 
         System.out.println("\n위 메뉴를 장바구니에 추가하시겠습니까?");
@@ -144,6 +108,38 @@ public class Order {
         Main.displayMainMenu();
     }
 
+    public Products selectOption(Products p){
+        System.out.println("\n위 메뉴의 어떤 옵션으로 추가하시겠습니까?");
+
+        int i = 1;
+        for(String key : p.options.keySet())    // 옵션 출력
+            System.out.println(i++ + ". " + key + " (+ \u20A9 " + p.options.get(key) + ")");
+
+        System.out.print("\n옵션 선택 : ");
+        int op_select = sc.nextInt();
+        System.out.println("\n---------------------------------------------------------------------------\n");
+
+        int j = 1;
+        for(String key : p.options.keySet()){
+            if(op_select == j++){                                   // map에서 op_select번째 값 탐색
+                String name = p.getName() + "(" + key + ")";        // name을 상품 이름+(옵션 이름)으로 저장
+                int price = p.getPrice() + p.options.get(key);      // 현재 상품 값인 price에 옵션 값을 더해 저장
+                String script = p.getScript();
+
+                p = null;                                   // p 비우기
+                for (Products find_p : orderList) {
+                    if (find_p.getName().equals(name)) {    // orderList에 존재할 경우
+                        p = find_p;                         // 해당 객체를 반환
+                        break;
+                    }
+                }
+                if(p == null) p = new Products(name, script, price);    // 존재하지 않을 경우 새 객체 생성
+                break;
+            }
+        }
+        System.out.println(p.getName() + " | \u20A9 " + p.getPrice() + " | " + p.getScript());
+        return p;
+    }
 
     public void clearOrder(){
         orderList.clear();

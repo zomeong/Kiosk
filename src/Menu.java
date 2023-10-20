@@ -32,7 +32,6 @@ public class Menu {
         // 상품 입력
         System.out.print("\n상품 번호를 입력해주세요 : ");
         int select = sc.nextInt();
-        Products p = menuList.get(select - 1);      // 선택한 상품 객체 return
-        return p;
+        return menuList.get(select - 1);      // 선택한 상품 객체 return
     }
 }
