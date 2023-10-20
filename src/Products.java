@@ -2,9 +2,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Products extends Menu {
-    public int price;
-    public int count = 1;
-    public Map<String, Integer> options = new LinkedHashMap<>();
+    private int price;
+    private int count = 1;
+    public Map<String, Integer> options = null;
 
     public Products(String name, String script, int price) {
         super(name, script);
@@ -14,18 +14,27 @@ public class Products extends Menu {
         super(name, script);
         this.price = price;
 
+        this.options =  new LinkedHashMap<>();
         for(int i = 0; i < options.length; i+=2) {
             String key = (String) options[i];
             Integer value = (Integer) options[i + 1];
             this.options.put(key, value);
         }
     }
+    public void addCount(){
+        this.count++;
+    }
 
+    public int getPrice(){
+        return this.price;
+    }
+    public int getCount(){
+        return this.count;
+    }
     public void setPrice(int price){
         this.price = price;
     }
-
-    public void addCount(){
-        this.count++;
+    public void setCount(int count){
+        this.count = count;
     }
 }

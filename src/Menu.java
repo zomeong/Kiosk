@@ -19,7 +19,7 @@ public class Menu {
         this.script = script;
     }
 
-    public Products printMenu() {
+    public Products displayMenu() {
         Scanner sc = new Scanner(System.in);
 
         // 상품 메뉴판 출력
@@ -27,14 +27,12 @@ public class Menu {
         System.out.println("[ " + this.name + " MENU ] ");
         int i = 1;
         for (Products p : menuList)
-            System.out.println(i++ + ". " + p.getName() + " | \u20A9 " + p.price + " | " + p.getScript());
+            System.out.println(i++ + ". " + p.getName() + " | \u20A9 " + p.getPrice() + " | " + p.getScript());
 
-        // 상품 검색
-        System.out.print("\n상품을 입력해주세요 : ");
-        String select = sc.nextLine();
-        for (Products p : menuList)
-            if (p.getName().equals(select)) return p;       // 선택한 상품 객체 return
-
-        return null;
+        // 상품 입력
+        System.out.print("\n상품 번호를 입력해주세요 : ");
+        int select = sc.nextInt();
+        Products p = menuList.get(select - 1);      // 선택한 상품 객체 return
+        return p;
     }
 }
