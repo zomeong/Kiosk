@@ -48,11 +48,11 @@ public class Main {
         int select = sc.nextInt();
 
         if(select == 0) {
-            displayHiddenMenu();
+            displayHiddenMenu();                            // 히든 메뉴 출력 (총 주문 현황)
         }
         else if(select == 1 || select == 2 || select == 3 || select == 4) {
             Menu m = mainMenuList.get(select - 1);          // 해당 메뉴 객체 선택
-            order.addList(m.displayMenu());                 // 상품 메뉴 출력 -> 선택 상품 객체 리턴 -> 장바구니 추가
+            order.addList(m.displayMenu());                 // 상품 메뉴 리스트 출력 -> 상품 선택 -> 상품 객체 return -> 장바구니 추가
         }
         else if(select == 5) {
             order.displayOrder();                           // 장바구니 출력
@@ -91,19 +91,19 @@ public class Main {
         ArrayList<Products> cm = coffeeMenu.menuList;
         cm.add(new Products("Espresso", "향기로운 크레마 층과 바디 층, 하트 층으로 이루어진 커피", 4000));
         cm.add(new Products("Americano", "에스프레소와 물을 섞은 커피", 4500, "Ice", 500, "Hot", 0));
-        cm.add(new Products("Caffe Mocha", "초콜릿 모카 시럽과 에스프레소를 스팀 밀크와 섞어 휘핑크림으로 마무리한 음료", 5500, "시럽 추가", 500, "기본", 0));
-        cm.add(new Products("Hazelnut Latte", "고소한 마롱, 헤이즐넛과 블론드 에스프레소가 만나 가을을 느낄 수 있는 음료", 6500));
-        cm.add(new Products("Glazed Latte", "가을 시즌 대표 음료! 짙고 풍부한 커피와 달콤하고 부드러운 글레이즈드 폼의 조화", 6500));
+        cm.add(new Products("Caffe Mocha", "초콜릿 모카 시럽과 에스프레소를 스팀 밀크와 섞어 휘핑크림으로 마무리한 음료", 5500, "모카 시럽 추가", 500, "기본", 0));
+        cm.add(new Products("Hazelnut Latte", "고소한 마롱, 헤이즐넛과 블론드 에스프레소가 만나 가을을 느낄 수 있는 음료", 6500,"Ice", 500, "Hot", 0));
+        cm.add(new Products("Glazed Latte", "가을 시즌 대표 음료! 짙고 풍부한 커피와 달콤하고 부드러운 글레이즈드 폼의 조화", 6500,"Ice", 500, "Hot", 0));
         cm.add(new Products("Cold Brew", "콜드 브루에 더해진 바닐라 크림으로 깔끔하면서 달콤한 콜드 브루", 5800));
-        cm.add(new Products("Macchiato", "바닐라 시럽과 따뜻한 스팀 밀크 위에 우유 거품을 얹고 에스프레소를 부은 음료", 5900));
+        cm.add(new Products("Macchiato", "바닐라 시럽과 따뜻한 스팀 밀크 위에 우유 거품을 얹고 에스프레소를 부은 음료", 5900, "카라멜 시럽 추가", 500, "바닐라 시럽 추가", 500, "기본", 0));
 
         // smoothie menu
         ArrayList<Products> sm = smoothieMenu.menuList;
         sm.add(new Products("Java Chip Frappuccino", "커피, 모카 소스, 초콜릿 칩이 어우러진 프라푸치노", 6300, "샷 추가", 500, "기본", 0));
-        sm.add(new Products("Malcha Frappuccino", "말차의 맛과 향을 시원하고 부드럽게 즐길 수 있는 프라푸치노", 6500, "진하게", 300, "기본", 0, "연하게", 0));
-        sm.add(new Products("Mango Blended", "망고 패션프루트 주스에 바나나가 들어간 블렌디드", 5400));
-        sm.add(new Products("Peach Blended", "복숭아에 요거트가 더해져 가볍고 상큼한 과일 블렌디드", 6100));
-        sm.add(new Products("Yogurt Blended", "요거트와 딸기 과육이 상큼하게 어우러진 과일 요거트 블렌디드", 6300));
+        sm.add(new Products("Malcha Frappuccino", "말차의 맛과 향을 시원하고 부드럽게 즐길 수 있는 프라푸치노", 6500, "진하게", 300, "기본", 0, "연하게", -300));
+        sm.add(new Products("Mango Blended", "망고 패션프루트 주스에 바나나가 들어간 블렌디드", 5400, "Tall size", 0, "Grande size", 800));
+        sm.add(new Products("Peach Blended", "복숭아에 요거트가 더해져 가볍고 상큼한 과일 블렌디드", 6100, "Tall size", 0, "Grande size", 800));
+        sm.add(new Products("Yogurt Blended", "요거트와 딸기 과육이 상큼하게 어우러진 과일 요거트 블렌디드", 6300, "Tall size", 0, "Grande size", 800));
 
         // dessert menu
         ArrayList<Products> dm = dessertMenu.menuList;

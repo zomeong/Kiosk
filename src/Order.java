@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 public class Order {
     ArrayList<Products> orderList = new ArrayList<>();
     int totalPrice;
-    int optionPrice;
     int waitingNum = 1;
     private String name = "Order";
     private String script = "장바구니를 확인 후 주문합니다.";
@@ -25,48 +24,64 @@ public class Order {
         }
         else {
             // 장바구니 내역 출력
+            int i = 1;
             for (Products p : orderList)
-                System.out.println(p.getName() + " | \u20A9 " + p.getPrice() + " | " + p.getCount() + "개");
+                System.out.println(i++ + ". " + p.getName() + " | \u20A9 " + p.getPrice() + " | " + p.getCount() + "개");
 
             System.out.println("\n[ Total ]");
-            System.out.println("\u20A9 " + totalPrice);
+            System.out.println("\u20A9 " + totalPrice);         // 총 가격 출력
 
-            System.out.print("\n1.Order  2.Main menu");
-            inputOrder();       // 주문 입력
+            System.out.print("\n1.Order  2.Delete  3.Main menu");
+            System.out.print("\n입력 : ");
+            int select = sc.nextInt(); 
+            if(select == 1) purchase();             // 주문
+            else if(select == 2) deleteOrder();     // 상품 삭제
+            else  {
+                if(select != 3) System.out.println("잘못된 입력 입니다.");
+                Main.displayMainMenu();
+            }
         }
     }
 
-    public void inputOrder(){
-        // 주문 입력
-        System.out.print("\n입력 : ");
-        int select = sc.nextInt();
+    public void purchase(){
+        Main.totalPrice += this.totalPrice;     // 총 주문금액 업데이트
 
-        if(select == 1){
-            Main.totalPrice += this.totalPrice;     // 총 주문금액 업데이트
-
-            for(Products p : orderList){            // 총 주문내역 업데이트
-                if(Main.totalProducts.containsValue(p)){                    // 내역에 이미 존재하면
-                    Products listP = Main.totalProducts.get(p.getName());   // 해당 객체를 찾음
-                    listP.setCount(listP.getCount() + p.getCount());        // count 업데이트
-                    listP.setPrice(listP.getPrice() + p.getPrice());        // price 업데이트
-                }
-                else Main.totalProducts.put(p.getName(), p);                // 존재하지 않으면 put
+        for(Products p : orderList){            // 총 주문내역 업데이트
+            if(Main.totalProducts.containsValue(p)){                    // 내역에 이미 존재하면
+                Products listP = Main.totalProducts.get(p.getName());   // 해당 객체를 찾음
+                listP.setCount(listP.getCount() + p.getCount());        // count 업데이트
+                listP.setPrice(listP.getPrice() + p.getPrice());        // price 업데이트
             }
-
-            clearOrder();    // 장바구니 초기화
-
-            System.out.println("\n---------------------------------------------------------------------------\n");
-            System.out.println("주문이 완료되었습니다!\n");
-            System.out.println("대기번호는 [ " + waitingNum++ +" ] 번 입니다.");
-            System.out.println("(3초 후 메뉴판으로 돌아갑니다.)");
-            waitMain();     // 3초 후 메뉴판 실행
+            else Main.totalProducts.put(p.getName(), p);                // 존재하지 않으면 put
         }
-        else if(select == 2) {
-            Main.displayMainMenu();
+
+        clearOrder();    // 장바구니 초기화
+
+        System.out.println("\n---------------------------------------------------------------------------\n");
+        System.out.println("주문이 완료되었습니다!\n");
+        System.out.println("대기번호는 [ " + waitingNum++ +" ] 번 입니다.");
+        System.out.println("(3초 후 메뉴판으로 돌아갑니다.)");
+        waitMain();     // 3초 후 메뉴판 실행
+    }
+
+    public void deleteOrder(){
+        // 장바구니에서 특정 상품 삭제
+
+        System.out.print("삭제할 상품 선택 : ");
+        int del_select = sc.nextInt() - 1;
+
+        if(del_select >= orderList.size()){
+            System.out.println("\n잘못된 입력입니다.");
+            deleteOrder();
         }
-        else{
-            System.out.println("잘못된 입력 입니다.");
-            inputOrder();
+        else {
+            String p_select = orderList.get(del_select).getName();      // 선택한 상품 이름 저장
+            totalPrice -= orderList.get(del_select).getPrice();         // 선택한 상품 가격 total에서 차감
+
+            orderList.remove(del_select);                               // 장바구니에서 삭제
+
+            System.out.println("\n" + p_select + " 장바구니에서 삭제되었습니다.");
+            displayOrder();     // 장바구니 재출력
         }
     }
 
@@ -80,7 +95,7 @@ public class Order {
     }
 
     public void addList(Products p){
-        // displayMenu()에서 전달받은 상품 객체 장바구니에 추가
+        // (displayMenu()에서) 전달 받은 상품 객체 장바구니에 추가
         System.out.println("\n---------------------------------------------------------------------------\n");
         System.out.println(p.getName() + " | \u20A9 " + p.getPrice() + " | " + p.getScript());
 
@@ -96,7 +111,7 @@ public class Order {
             if(orderList.contains(p)) p.addCount();     // 장바구니에 동일 상품 존재시 conunt++
             else orderList.add(p);                      // 없으면 추가
 
-            totalPrice += p.getPrice();
+            totalPrice += p.getPrice();                 // 장바구니 총금액 업데이트
             System.out.println(p.getName() +" 장바구니에 추가되었습니다.");
         }
         else if(select == 2) {
@@ -144,7 +159,6 @@ public class Order {
     public void clearOrder(){
         orderList.clear();
         totalPrice = 0;
-        optionPrice = 0;
     }
 
     public String getName(){

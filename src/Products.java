@@ -22,10 +22,10 @@ public class Products extends Menu {
             this.options.put(key, value);
         }
     }
+
     public void addCount(){
         this.count++;
     }
-
     public int getPrice(){
         return this.price;
     }
